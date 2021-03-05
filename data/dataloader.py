@@ -1,12 +1,9 @@
 import os
 import cv2 
-from torch.utils.data import Dataset, DataLoader, random_split
-from torchvision import transforms, utils, models
+from torch.utils.data import Dataset
 import torch.optim.lr_scheduler
 import torch
-import torch.nn as nn
 from tqdm import tqdm
-from torch import optim
 
 class AgeGenEthDataset(Dataset):
     """Age Gender Ethnicity dataset"""
