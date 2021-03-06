@@ -128,7 +128,7 @@ if __name__ == "__main__":
     res.eval()
     
     with torch.no_grad():
-        for data in test_loader:
+        for data in tqdm(test_loader):
             age,gender,ethin,image = data
 
             age = age.to(device=device)
@@ -139,18 +139,29 @@ if __name__ == "__main__":
             # get prediction
             output = res(image)
             for idx,i in enumerate(output):
-                print("i value == ", i)
-                print("i shape == ", i.shape)
+                if math.ceil(i[:1]) == age[idx] :
+                    correct_age += 1
+                if torch.argmax(sig(i[1:2])) == gender[idx] :
+                    correct_gen += 1
+                if torch.argmax(sig(i[2:])) == ethin[idx] :
+                    correct_eth += 1
+                total += 1    
 
-                print("output age == ", i[:1])
-                # print("argmax age == ", torch.argmax(i[:1]))
+    print( "Accuracy of age  = ", round((correct_age/total)*100 , 3))
+    print( "Accuracy of gender  = ", round((correct_gen/total)*100 , 3))
+    print( "Accuracy of ethnicity  = ", round((correct_eth/total)*100 , 3))
+                # print("i value == ", i)
+                # print("i shape == ", i.shape)
 
-                print("output gen == ", sig(i[1:2]))
-                print("argmax gen == ", torch.argmax(sig(i[1:2])))
+                # print("output age == ", math.ceil(i[:1]))
+                # # print("argmax age == ", torch.argmax(i[:1]))
 
-                print("output eth == ", sig(i[2:]))
-                print("argmax eth == ", torch.argmax(sig(i[2:])))
+                # print("output gen == ", sig(i[1:2]))
+                # print("argmax gen == ", torch.argmax(sig(i[1:2])))
+
+                # print("output eth == ", sig(i[2:]))
+                # print("argmax eth == ", torch.argmax(sig(i[2:])))
                 
-                print(" other features == ",age[idx],"...",gender[idx],"...",ethin[idx])
+                # print(" other features == ",age[idx],"...",gender[idx],"...",ethin[idx])
                 
 
